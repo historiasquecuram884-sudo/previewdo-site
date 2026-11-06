@@ -1,0 +1,1 @@
+import{j as o}from"./index-8HqpQpLc.js";import{L as t,T as e}from"./sonner-CZwfNh0f.js";import{P as s,c as a,A as r}from"./sections-DvFmQlRD.js";function c(){return o.jsxs(t,{children:[o.jsx(e,{}),o.jsx(s,{eyebrow:"Get In Touch",title:"Contact us.",sub:"Tell us about the property and the kind of clean you need."}),o.jsx(a,{}),o.jsx(r,{})]})}export{c as component};

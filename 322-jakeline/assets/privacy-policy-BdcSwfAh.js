@@ -1,0 +1,1 @@
+import{j as o}from"./index-8HqpQpLc.js";import{L as r,T as a}from"./sonner-CZwfNh0f.js";import{P as s,b as t}from"./sections-DvFmQlRD.js";function n(){return o.jsxs(r,{children:[o.jsx(a,{}),o.jsx(s,{eyebrow:"Legal",title:"Privacy policy."}),o.jsx(t,{})]})}export{n as component};

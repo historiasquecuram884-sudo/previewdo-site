@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+
+Sitemap: https://perfect-polish-maker.lovable.app/sitemap.xml
