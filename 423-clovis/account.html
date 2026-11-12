@@ -9,7 +9,7 @@
 <link rel="icon" href="assets/img/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/site.css?v=2611121549">
+<link rel="stylesheet" href="assets/css/site.css?v=2611122024">
 </head>
 <body>
 <header class="top">
@@ -39,23 +39,10 @@
       <div class="card" id="planCard"></div>
 
       <div class="card" id="requestCard">
-        <h2>Request service</h2>
-        <p class="muted small">A $70 call fee applies per visit and each visit uses at least 1 labor hour. Urgent calls (burst pipe, active leak) are attended within 24 hours, routine repairs within 48 hours.</p>
-        <form id="reqForm">
-          <div class="pick" style="grid-template-columns:1fr 1fr">
-            <label><input type="radio" name="kind" value="routine" checked><div class="opt"><b>Routine repair</b><span>Within 48 hours</span></div></label>
-            <label><input type="radio" name="kind" value="urgent"><div class="opt"><b>Urgent</b><span>Within 24 hours</span></div></label>
-          </div>
-          <div class="field"><label for="r-msg">What do you need?</label><textarea id="r-msg" name="message" required placeholder="Describe the problem and where it is in the house"></textarea></div>
-          <div class="field"><label for="r-pref">Best days and times for the visit</label><input id="r-pref" name="preferred" placeholder="e.g. weekday mornings"></div>
-          <div class="err hidden" id="reqErr"></div>
-          <div class="okmsg hidden" id="reqOk">Request sent. We will contact you to confirm the visit.</div>
-          <button class="btn btn-gold">Send request</button>
-        </form>
-        <p class="small muted" style="margin:14px 0 0">For an emergency you can also call <a href="tel:+17744629003">(774) 462-9003</a>.</p>
+        <h2>Need a visit?</h2>
+        <p class="muted">Call or text us and we will schedule it. Urgent calls (burst pipe, active leak) are attended within 24 hours, routine repairs within 48 hours. A $70 call fee applies per visit and each visit uses at least 1 labor hour.</p>
+        <div class="row"><a class="btn btn-gold" href="tel:+17744629003">Call (774) 462-9003</a><a class="btn btn-navy" href="sms:+17744629003">Send a text</a></div>
       </div>
-
-      <div class="card"><h2>Your requests</h2><div class="table-wrap" id="reqList"></div></div>
       <div class="card"><h2>Visit history</h2><div class="table-wrap" id="visitList"></div></div>
 
       <details class="card">
@@ -70,6 +57,6 @@
     </div>
   </div>
 </main>
-<script type="module" src="assets/js/account.js?v=2611121549"></script>
+<script type="module" src="assets/js/account.js?v=2611122024"></script>
 </body>
 </html>

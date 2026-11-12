@@ -1,4 +1,4 @@
-import { api, $, $$, esc, money, date, hours, pill, showError, formData, busy, STATUS } from './common.js?v=2611121549';
+import { api, $, $$, esc, money, date, hours, pill, showError, formData, busy, STATUS } from './common.js?v=2611122024';
 
 let D = null; // last admin_data payload
 const today = new Date().toLocaleDateString('en-CA'); // YYYY-MM-DD in local time
@@ -21,30 +21,27 @@ async function load() {
   }
   $('#loginForm').classList.add('hidden'); $('#app').classList.remove('hidden'); $('#logout').classList.remove('hidden');
   $('#demoNote').classList.toggle('hidden', D.stripe);
-  renderOverview(); renderClients(); renderRequests();
+  renderOverview(); renderClients();
 }
 
 function renderOverview() {
   const C = D.clients, active = C.filter(c => c.status === 'active' || c.status === 'past_due');
-  const open = D.requests.filter(r => r.status !== 'done');
   const pending = C.filter(c => c.status === 'contract' || c.status === 'payment');
+  const ren = active.filter(c => c.termEnd && daysUntil(c.termEnd) <= 60).sort((a, b) => a.termEnd.localeCompare(b.termEnd));
   $('#kpis').innerHTML = `
     <div class="kpi"><b>${active.length}</b><span>Active members</span></div>
     <div class="kpi"><b>${money(active.reduce((s, c) => s + c.price, 0))}</b><span>Monthly recurring revenue</span></div>
-    <div class="kpi"><b>${open.length}</b><span>Open service requests</span></div>
+    <div class="kpi"><b>${ren.length}</b><span>Renewals in 60 days</span></div>
     <div class="kpi"><b>${pending.length}</b><span>Unfinished sign-ups</span></div>`;
 
   const rows = [
-    ...open.filter(r => r.kind === 'urgent' && r.status === 'open').map(r => [pill('urgent', 'Urgent request'), esc(r.name), tel(r.phone), esc(r.message), r.client_id]),
     ...C.filter(c => c.status === 'past_due').map(c => [pill('past_due'), esc(c.name), tel(c.phone), 'Payment failed. Ask the client to update the card.', c.id]),
-    ...open.filter(r => r.kind !== 'urgent' && r.status === 'open').map(r => [pill('open', 'New request'), esc(r.name), tel(r.phone), esc(r.message), r.client_id]),
     ...pending.map(c => [pill(c.status), esc(c.name), tel(c.phone), `Started sign-up on ${date(c.createdAt)} (${esc(c.planName)}). Follow up.`, c.id]),
   ];
   $('#attention').innerHTML = rows.length ? `<table class="list"><tr><th>What</th><th>Client</th><th>Phone</th><th>Details</th></tr>
     ${rows.map(r => `<tr class="click" data-id="${r[4]}"><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join('')}</table>`
     : '<p class="muted">All clear. Nothing waiting for you.</p>';
 
-  const ren = active.filter(c => c.termEnd && daysUntil(c.termEnd) <= 60).sort((a, b) => a.termEnd.localeCompare(b.termEnd));
   $('#renewals').innerHTML = ren.length ? `<table class="list"><tr><th>Client</th><th>Plan</th><th>Contract year ends</th><th>Hours used</th></tr>
     ${ren.map(c => `<tr class="click" data-id="${c.id}"><td>${esc(c.name)}</td><td>${esc(c.planName)}</td><td>${date(c.termEnd)} (${daysUntil(c.termEnd)} days)</td><td>${hours(c.hoursUsed)} of ${hours(c.hoursIncluded)}</td></tr>`).join('')}</table>`
     : '<p class="muted">No renewals in the next 60 days. Agreements renew automatically; the 30 day notice window starts 30 days before the end date.</p>';
@@ -63,16 +60,6 @@ function renderClients() {
     : '<p class="muted">No clients found.</p>';
 }
 $('#search').oninput = $('#filter').onchange = renderClients;
-
-function renderRequests() {
-  $('#reqTable').innerHTML = D.requests.length ? `<table class="list"><tr><th>Received</th><th>Client</th><th>Type</th><th>Request</th><th>Status</th></tr>
-    ${D.requests.map(r => `<tr><td>${date(r.created_at)}</td>
-      <td><button class="link" data-id="${r.client_id}">${esc(r.name)}</button><br><span class="small">${tel(r.phone)} · ${esc(r.street)}, ${esc(r.city)}</span></td>
-      <td>${pill(r.kind, r.kind)}</td><td>${esc(r.message)}${r.preferred ? `<br><span class="small muted">Preferred: ${esc(r.preferred)}</span>` : ''}</td>
-      <td><select data-req="${r.id}">${['open', 'scheduled', 'done'].map(s => `<option ${s === r.status ? 'selected' : ''}>${s}</option>`).join('')}</select></td></tr>`).join('')}</table>`
-    : '<p class="muted">No service requests yet.</p>';
-  $$('[data-req]').forEach(sel => sel.onchange = async () => { await api('request_update', { id: +sel.dataset.req, status: sel.value }); load(); });
-}
 
 // any row/link with data-id opens the client drawer
 document.addEventListener('click', e => {

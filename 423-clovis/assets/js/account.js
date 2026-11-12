@@ -1,8 +1,8 @@
-import { api, $, esc, money, date, hours, pill, showError, formData, busy } from './common.js?v=2611121549';
+import { api, $, esc, money, date, hours, pill, showError, formData, busy } from './common.js?v=2611122024';
 
 const params = new URLSearchParams(location.search);
 
-function render({ client: c, visits, requests, stripe }) {
+function render({ client: c, visits, stripe }) {
   $('#loginForm').classList.add('hidden');
   $('#dash').classList.remove('hidden');
   $('#logout').classList.remove('hidden');
@@ -39,9 +39,6 @@ function render({ client: c, visits, requests, stripe }) {
     try { location.href = (await api('portal', {})).url; } catch (err) { showError($('#dashErr'), err.message); }
   }));
 
-  $('#reqList').innerHTML = requests.length ? `<table class="list"><tr><th>Date</th><th>Type</th><th>Request</th><th>Status</th></tr>
-    ${requests.map(r => `<tr><td>${date(r.created_at)}</td><td>${pill(r.kind, r.kind)}</td><td>${esc(r.message)}</td><td>${pill(r.status, r.status)}</td></tr>`).join('')}</table>`
-    : '<p class="muted">No requests yet.</p>';
   $('#visitList').innerHTML = visits.length ? `<table class="list"><tr><th>Date</th><th>Hours</th><th>Work done</th></tr>
     ${visits.map(v => `<tr><td>${date(v.date)}</td><td>${hours(v.hours)}</td><td>${esc(v.description)}</td></tr>`).join('')}</table>`
     : '<p class="muted">No visits yet. Your Winter Inspection will show up here.</p>';
@@ -65,14 +62,6 @@ $('#loginForm').onsubmit = e => {
 };
 $('#logout').onclick = async () => { await api('logout'); location.href = './'; };
 
-$('#reqForm').onsubmit = e => {
-  e.preventDefault();
-  busy(e.submitter, async () => {
-    showError($('#reqErr')); $('#reqOk').classList.add('hidden');
-    try { await api('request', formData(e.target)); e.target.reset(); $('#reqOk').classList.remove('hidden'); load(); }
-    catch (err) { showError($('#reqErr'), err.message); }
-  });
-};
 $('#pwForm').onsubmit = e => {
   e.preventDefault();
   busy(e.submitter, async () => {

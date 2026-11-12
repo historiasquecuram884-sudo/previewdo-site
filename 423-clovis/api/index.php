@@ -44,8 +44,6 @@ function db(): PDO {
       demo INTEGER NOT NULL DEFAULT 0, notes TEXT);
     CREATE TABLE IF NOT EXISTS visits (id INTEGER PRIMARY KEY, client_id INTEGER NOT NULL REFERENCES clients(id) ON DELETE CASCADE,
       date TEXT NOT NULL, hours REAL NOT NULL, description TEXT, created_at TEXT NOT NULL);
-    CREATE TABLE IF NOT EXISTS requests (id INTEGER PRIMARY KEY, client_id INTEGER NOT NULL REFERENCES clients(id) ON DELETE CASCADE,
-      created_at TEXT NOT NULL, kind TEXT NOT NULL, message TEXT NOT NULL, preferred TEXT, status TEXT NOT NULL DEFAULT 'open');
     CREATE TABLE IF NOT EXISTS settings (k TEXT PRIMARY KEY, v TEXT);
     CREATE TABLE IF NOT EXISTS attempts (ip TEXT NOT NULL, ts INTEGER NOT NULL);
   ");
@@ -270,7 +268,6 @@ case 'me': { // client dashboard data
   out([
     'client' => public_client($c),
     'visits' => q('SELECT date,hours,description FROM visits WHERE client_id=? ORDER BY date DESC', [$c['id']])->fetchAll(),
-    'requests' => q('SELECT created_at,kind,message,preferred,status FROM requests WHERE client_id=? ORDER BY id DESC', [$c['id']])->fetchAll(),
     'stripe' => (bool)stripe_key(),
   ]);
 }
@@ -353,16 +350,6 @@ case 'portal': { // Stripe customer portal: update card, see invoices
   out(['url' => $s['url']]);
 }
 
-case 'request': {
-  $c = me();
-  if ($c['status'] !== 'active' && $c['status'] !== 'past_due') fail('Your plan must be active to request service.');
-  $kind = ($in['kind'] ?? '') === 'urgent' ? 'urgent' : 'routine';
-  $msg = str_in('message', 2000);
-  if (mb_strlen($msg) < 5) fail('Please describe what you need.');
-  q('INSERT INTO requests(client_id,created_at,kind,message,preferred) VALUES(?,?,?,?,?)', [$c['id'], now(), $kind, $msg, str_in('preferred', 200)]);
-  out(['ok' => true]);
-}
-
 case 'password': { // client changes own password
   $c = me();
   if (!password_verify((string)($in['current'] ?? ''), $c['pass_hash'])) fail('Current password is wrong.');
@@ -386,8 +373,7 @@ case 'admin_data': {
   sync_clients($rows);
   $rows = q('SELECT * FROM clients ORDER BY id DESC')->fetchAll();
   $clients = array_map(fn($c) => public_client($c, true), $rows);
-  $requests = q('SELECT r.id,r.client_id,r.created_at,r.kind,r.message,r.preferred,r.status,c.name,c.phone,c.plan,c.street,c.city FROM requests r JOIN clients c ON c.id=r.client_id ORDER BY (r.status=\'done\'), r.id DESC LIMIT 300')->fetchAll();
-  out(['clients' => $clients, 'requests' => $requests, 'stripe' => (bool)stripe_key(), 'stripeMode' => str_starts_with((string)stripe_key(), 'sk_live') || str_starts_with((string)stripe_key(), 'rk_live') ? 'live' : (stripe_key() ? 'test' : null), 'plans' => PLANS]);
+  out(['clients' => $clients, 'stripe' => (bool)stripe_key(), 'stripeMode' => str_starts_with((string)stripe_key(), 'sk_live') || str_starts_with((string)stripe_key(), 'rk_live') ? 'live' : (stripe_key() ? 'test' : null), 'plans' => PLANS]);
 }
 
 case 'admin_client': {
@@ -419,14 +405,6 @@ case 'visit_add': {
 
 case 'visit_delete':
   admin(); q('DELETE FROM visits WHERE id=?', [(int)($in['id'] ?? 0)]); out(['ok' => true]);
-
-case 'request_update': {
-  admin();
-  $st = $in['status'] ?? '';
-  if (!in_array($st, ['open', 'scheduled', 'done'], true)) fail('Unknown status.');
-  q('UPDATE requests SET status=? WHERE id=?', [$st, (int)($in['id'] ?? 0)]);
-  out(['ok' => true]);
-}
 
 case 'reset_password': { // admin generates a temporary password to send to the client by text
   admin();
