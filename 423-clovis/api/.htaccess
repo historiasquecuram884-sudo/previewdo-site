@@ -1,0 +1,2 @@
+DirectoryIndex index.php
+RedirectMatch 404 /api/data(/|$)

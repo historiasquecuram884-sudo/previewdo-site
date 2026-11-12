@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin | Safety Care Home</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#010f24">
+<link rel="icon" href="assets/img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/site.css?v=2611121545">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="./"><img src="assets/img/logo-light.png" alt="C2EK Construction LLC" width="48" height="56"><span><b>Safety Care Home</b><small>Admin</small></span></a>
+    <nav class="nav" style="display:flex;position:static;background:none;padding:0"><button class="link hidden" id="logout" style="color:#fff">Sign out</button></nav>
+  </div>
+</header>
+
+<main class="app-main">
+  <div class="wrap">
+    <form class="card center-card hidden" id="loginForm">
+      <h2>Admin login</h2>
+      <div class="field"><label for="a-pass">Password</label><input id="a-pass" name="password" type="password" required autocomplete="current-password"></div>
+      <div class="err hidden" id="loginErr"></div>
+      <button class="btn btn-gold" style="width:100%">Sign in</button>
+    </form>
+
+    <div class="hidden" id="app">
+      <div class="err hidden" id="appErr"></div>
+      <div class="tabs" id="tabs">
+        <button data-tab="overview" class="on">Overview</button>
+        <button data-tab="clients">Clients</button>
+        <button data-tab="requests">Service requests</button>
+        <button data-tab="settings">Settings</button>
+      </div>
+
+      <div data-pane="overview">
+        <div class="okmsg hidden" id="demoNote">Preview mode: Stripe is not connected, so sign-ups use a simulated payment. Connect Stripe in Settings to go live.</div>
+        <div class="kpis" id="kpis"></div>
+        <div class="card"><h2>Needs attention</h2><div class="table-wrap" id="attention"></div></div>
+        <div class="card"><h2>Renewals in the next 60 days</h2><div class="table-wrap" id="renewals"></div></div>
+      </div>
+
+      <div data-pane="clients" class="hidden">
+        <div class="card">
+          <div class="toolbar">
+            <input id="search" placeholder="Search name, email, phone or address">
+            <select id="filter"><option value="">All statuses</option><option value="active">Active</option><option value="payment">Awaiting payment</option><option value="contract">Awaiting signature</option><option value="past_due">Past due</option><option value="canceled">Canceled</option></select>
+          </div>
+          <div class="table-wrap" id="clientTable"></div>
+        </div>
+      </div>
+
+      <div data-pane="requests" class="hidden">
+        <div class="card"><div class="table-wrap" id="reqTable"></div></div>
+      </div>
+
+      <div data-pane="settings" class="hidden">
+        <div class="card">
+          <h2>Online payments (Stripe)</h2>
+          <p id="stripeState" class="muted">Loading...</p>
+          <form id="stripeForm">
+            <div class="field"><label for="st-key">Stripe secret key</label><input id="st-key" name="stripe_key" type="password" autocomplete="off" placeholder="sk_live_..."></div>
+            <div class="err hidden" id="stErr"></div><div class="okmsg hidden" id="stOk">Saved.</div>
+            <div class="row"><button class="btn btn-gold btn-sm">Save key</button><button type="button" class="btn btn-ghost btn-sm" id="stRemove">Disconnect</button></div>
+          </form>
+          <p class="small muted" style="margin-top:16px">Where to find it: Stripe Dashboard → Developers → API keys → Secret key (Reveal). Paste it here directly. Do not send it by text or email. The key is stored on the server only and is never shown again.</p>
+        </div>
+        <div class="card">
+          <h2>Admin password</h2>
+          <form id="pwForm" style="max-width:380px">
+            <div class="field"><label for="ap-new">New admin password</label><input id="ap-new" name="admin_password" type="password" minlength="10" required autocomplete="new-password"></div>
+            <div class="err hidden" id="apErr"></div><div class="okmsg hidden" id="apOk">Password updated.</div>
+            <button class="btn btn-navy btn-sm">Update password</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="drawer hidden" id="drawer"><div id="drawerBody"></div></div>
+<script type="module" src="assets/js/admin.js?v=2611121545"></script>
+</body>
+</html>

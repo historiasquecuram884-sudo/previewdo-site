@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Join Safety Care Home</title>
+<meta name="description" content="Choose your plan, sign the service agreement and start your Safety Care Home membership online.">
+<meta name="theme-color" content="#010f24">
+<link rel="icon" href="assets/img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/site.css?v=2611121545">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="./"><img src="assets/img/logo-light.png" alt="C2EK Construction LLC" width="48" height="56"><span><b>Safety Care Home</b><small>by C2EK Construction</small></span></a>
+    <nav class="nav" style="display:flex;position:static;background:none;padding:0"><a href="account.html">Member login</a></nav>
+  </div>
+</header>
+
+<main class="app-main">
+  <div class="wrap" style="max-width:820px">
+    <div class="stepper" id="stepper"><span>1. Plan</span><span>2. Your details</span><span>3. Agreement</span><span>4. Payment</span></div>
+
+    <!-- 1. plan -->
+    <div class="card hidden" data-step="1">
+      <h2>Choose your plan</h2>
+      <p class="muted">All plans include the complete Winter Inspection and a fixed $70 call fee per visit. Billed monthly, 12 month agreement.</p>
+      <div class="pick" id="pick"></div>
+      <div class="err hidden" id="err1"></div>
+      <button class="btn btn-gold" id="toDetails">Continue</button>
+    </div>
+
+    <!-- 2. details -->
+    <form class="card hidden" data-step="2" id="regForm" autocomplete="on">
+      <h2>Your details</h2>
+      <p class="muted">You will use this email and password to sign in to your member area. Already a member? <a href="account.html">Sign in</a>.</p>
+      <div class="field"><label for="f-name">Full name</label><input id="f-name" name="name" required autocomplete="name"></div>
+      <div class="grid2">
+        <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" required autocomplete="email"></div>
+        <div class="field"><label for="f-phone">Phone</label><input id="f-phone" name="phone" type="tel" required autocomplete="tel" placeholder="(508) 555-0123"></div>
+      </div>
+      <div class="field"><label for="f-street">Address of the covered property</label><input id="f-street" name="street" required autocomplete="street-address" placeholder="Street and number, apt"></div>
+      <div class="grid3">
+        <div class="field"><label for="f-city">City</label><input id="f-city" name="city" required autocomplete="address-level2" value="Worcester"></div>
+        <div class="field"><label for="f-state">State</label><input id="f-state" name="state" required maxlength="2" autocomplete="address-level1" value="MA"></div>
+        <div class="field"><label for="f-zip">ZIP</label><input id="f-zip" name="zip" required inputmode="numeric" autocomplete="postal-code" pattern="\d{5}(-\d{4})?"></div>
+      </div>
+      <div class="field"><label for="f-pass">Create a password</label><input id="f-pass" name="password" type="password" minlength="8" required autocomplete="new-password" placeholder="At least 8 characters"></div>
+      <div class="err hidden" id="err2"></div>
+      <div class="row"><button type="button" class="btn btn-ghost" data-go="1">Back</button><button class="btn btn-gold">Continue to the agreement</button></div>
+    </form>
+
+    <!-- 3. agreement -->
+    <div class="card hidden" data-step="3">
+      <h2>Service agreement</h2>
+      <p class="muted">Please read the agreement below. It already has your name, address and plan. <button class="link" data-go="1">Change plan</button></p>
+      <div class="contract-box" id="contract">Loading...</div>
+      <div style="margin-top:22px">
+        <div class="field"><label for="s-name">Type your full name</label><input id="s-name" autocomplete="name"></div>
+        <div class="field">
+          <label>Sign below with your finger or mouse</label>
+          <canvas class="sigpad" id="sigpad"></canvas>
+          <button type="button" class="link small" id="clearSig">Clear signature</button>
+        </div>
+        <label class="check"><input type="checkbox" id="agree"> I have read and agree to the Safety Care Home Service Agreement, and I agree to sign it electronically.</label>
+      </div>
+      <div class="err hidden" id="err3" style="margin-top:16px"></div>
+      <div class="row" style="margin-top:18px"><button class="btn btn-gold" id="signBtn">Sign the agreement</button></div>
+    </div>
+
+    <!-- 4. payment -->
+    <div class="card hidden" data-step="4">
+      <h2>Payment</h2>
+      <div class="okmsg">Agreement signed. <a href="api/?r=contract" target="_blank" rel="noopener">View your signed copy</a></div>
+      <div class="err hidden" id="err4"></div>
+      <div class="summary" id="summary"></div>
+      <button class="btn btn-gold" id="payBtn">Pay securely with Stripe</button>
+      <div class="secure">🔒 You will be taken to Stripe's secure checkout. We never see or store your card number.</div>
+      <div class="hidden" id="demoBox" style="margin-top:22px;border-top:1px solid var(--line);padding-top:18px">
+        <p class="small muted"><b>Preview mode:</b> online payments are not connected yet, so this step only simulates the payment.</p>
+        <button class="btn btn-navy btn-sm" id="demoBtn">Simulate payment</button>
+      </div>
+    </div>
+  </div>
+</main>
+<script type="module" src="assets/js/join.js?v=2611121545"></script>
+</body>
+</html>

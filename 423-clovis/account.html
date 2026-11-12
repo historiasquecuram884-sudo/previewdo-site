@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Member Area | Safety Care Home</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#010f24">
+<link rel="icon" href="assets/img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/site.css?v=2611121545">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="./"><img src="assets/img/logo-light.png" alt="C2EK Construction LLC" width="48" height="56"><span><b>Safety Care Home</b><small>Member area</small></span></a>
+    <nav class="nav" style="display:flex;position:static;background:none;padding:0"><button class="link hidden" id="logout" style="color:#fff">Sign out</button></nav>
+  </div>
+</header>
+
+<main class="app-main">
+  <div class="wrap" style="max-width:980px">
+
+    <form class="card center-card hidden" id="loginForm">
+      <h2>Member login</h2>
+      <div class="field"><label for="l-email">Email</label><input id="l-email" name="email" type="email" required autocomplete="email"></div>
+      <div class="field"><label for="l-pass">Password</label><input id="l-pass" name="password" type="password" required autocomplete="current-password"></div>
+      <div class="err hidden" id="loginErr"></div>
+      <button class="btn btn-gold" style="width:100%">Sign in</button>
+      <p class="small muted" style="margin:16px 0 0">Forgot your password? Call or text us at <a href="tel:+17744629003">(774) 462-9003</a> and we will reset it.<br>Not a member yet? <a href="join.html">Join now</a>.</p>
+    </form>
+
+    <div class="hidden" id="dash">
+      <div class="okmsg hidden" id="welcome"></div>
+      <div class="err hidden" id="dashErr"></div>
+      <div class="card hidden" id="pending"></div>
+
+      <div class="card" id="planCard"></div>
+
+      <div class="card" id="requestCard">
+        <h2>Request service</h2>
+        <p class="muted small">A $70 call fee applies per visit and each visit uses at least 1 labor hour. Urgent calls (burst pipe, active leak) are attended within 24 hours, routine repairs within 48 hours.</p>
+        <form id="reqForm">
+          <div class="pick" style="grid-template-columns:1fr 1fr">
+            <label><input type="radio" name="kind" value="routine" checked><div class="opt"><b>Routine repair</b><span>Within 48 hours</span></div></label>
+            <label><input type="radio" name="kind" value="urgent"><div class="opt"><b>Urgent</b><span>Within 24 hours</span></div></label>
+          </div>
+          <div class="field"><label for="r-msg">What do you need?</label><textarea id="r-msg" name="message" required placeholder="Describe the problem and where it is in the house"></textarea></div>
+          <div class="field"><label for="r-pref">Best days and times for the visit</label><input id="r-pref" name="preferred" placeholder="e.g. weekday mornings"></div>
+          <div class="err hidden" id="reqErr"></div>
+          <div class="okmsg hidden" id="reqOk">Request sent. We will contact you to confirm the visit.</div>
+          <button class="btn btn-gold">Send request</button>
+        </form>
+        <p class="small muted" style="margin:14px 0 0">For an emergency you can also call <a href="tel:+17744629003">(774) 462-9003</a>.</p>
+      </div>
+
+      <div class="card"><h2>Your requests</h2><div class="table-wrap" id="reqList"></div></div>
+      <div class="card"><h2>Visit history</h2><div class="table-wrap" id="visitList"></div></div>
+
+      <details class="card">
+        <summary style="cursor:pointer;font:700 16px Montserrat">Change password</summary>
+        <form id="pwForm" style="margin-top:16px;max-width:380px">
+          <div class="field"><label for="p-cur">Current password</label><input id="p-cur" name="current" type="password" required autocomplete="current-password"></div>
+          <div class="field"><label for="p-new">New password</label><input id="p-new" name="next" type="password" minlength="8" required autocomplete="new-password"></div>
+          <div class="err hidden" id="pwErr"></div><div class="okmsg hidden" id="pwOk">Password updated.</div>
+          <button class="btn btn-navy btn-sm">Update password</button>
+        </form>
+      </details>
+    </div>
+  </div>
+</main>
+<script type="module" src="assets/js/account.js?v=2611121545"></script>
+</body>
+</html>
