@@ -1,7 +1,7 @@
-import { api, $, $$, esc, money, date, hours, pill, showError, formData, busy, STATUS } from './common.js?v=2611121545';
+import { api, $, $$, esc, money, date, hours, pill, showError, formData, busy, STATUS } from './common.js?v=2611121549';
 
 let D = null; // last admin_data payload
-const today = new Date().toISOString().slice(0, 10);
+const today = new Date().toLocaleDateString('en-CA'); // YYYY-MM-DD in local time
 const daysUntil = d => Math.round((new Date(d + 'T12:00:00') - new Date(today + 'T12:00:00')) / 864e5);
 const tel = p => p ? `<a href="tel:${esc(p.replace(/[^\d+]/g, ''))}">${esc(p)}</a>` : '-';
 
