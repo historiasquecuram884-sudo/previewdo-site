@@ -1,0 +1,1 @@
+import{j as s,b as o}from"./index-BgkAe4C4.js";import{L as e}from"./index-EKDmgVUu.js";import{P as t}from"./PageHero-D5PGFy0a.js";import{A as r,P as a}from"./sections-Ck-uaLvs.js";function c(){return s.jsxs(e,{children:[s.jsx(t,{eyebrow:"Who We Are",title:"About Us",text:`A family business cleaning homes across ${o.area}.`}),s.jsx(r,{}),s.jsx(a,{})]})}export{c as component};

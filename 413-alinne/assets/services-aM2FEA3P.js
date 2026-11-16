@@ -1,0 +1,1 @@
+import{j as e}from"./index-BgkAe4C4.js";import{L as o}from"./index-EKDmgVUu.js";import{P as t}from"./PageHero-D5PGFy0a.js";import{S as r,a as s}from"./sections-Ck-uaLvs.js";function c(){return e.jsxs(o,{children:[e.jsx(t,{eyebrow:"What We Do",title:"Our Services",text:"Homes and workplaces, cleaned the way you need them."}),e.jsx(r,{}),e.jsx(s,{})]})}export{c as component};
